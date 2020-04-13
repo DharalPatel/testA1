@@ -1,0 +1,35 @@
+version: 2.1
+commands:
+  install_deps:
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            npm install
+
+jobs:
+  ci-build:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/project/src
+    steps:
+      - checkout:
+          path: ~/project
+      - install_deps
+      - run:
+          name: Run unit tests
+          command: |
+            mkdir -p test-output
+            npm run test-unit
+      - store_test_results:
+          path: test-output
+
+      - run:
+          name: validate code coverage
+          command: |
+            bash <(curl -s https://codecov.io/bash)
+
+workflows:
+  build-and-package:
+    jobs:
+      - ci-build
