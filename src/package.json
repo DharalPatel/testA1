@@ -5,11 +5,11 @@
   "scripts": {
     "start": "cross-env DEBUG=express-sequelize node ./bin/www",
     "start:prod": "cross-env NODE_ENV=production DEBUG=express-sequelize node ./bin/www",
-    "test-lint": "",
+    "test-lint": "eslint ./",
     "test-unit": "cross-env NODE_ENV=unit nyc mocha test/unit --reporter mocha-junit-reporter --reporter-options mochaFile=./test-output/file.xml",
     "test-coverage": "cross-env NODE_ENV=unit nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "test-integration": "cross-env DB_USERNAME=postgres DB_PASSWORD=password DB_NAME=servian DB_HOSTNAME=localhost NODE_ENV=integration ",
-    "test-e2e": "cross-env NODE_ENV=e2e DB_USERNAME=postgres DB_PASSWORD=password DB_NAME=servian"
+    "test-integration": "cross-env DB_USERNAME=postgres DB_PASSWORD=password DB_NAME=servian DB_HOSTNAME=localhost NODE_ENV=integration mocha test/integration ",
+    "test-e2e": "cross-env NODE_ENV=e2e DB_USERNAME=postgres DB_PASSWORD=password DB_NAME=servian npx qawolf test"
   },
   "dependencies": {
     "bluebird": "^3.5.1",
@@ -32,9 +32,12 @@
     "eslint": "^6.8.0",
     "eslint-plugin-node": "^11.0.0",
     "expect.js": "^0.3.1",
+    "jest": "^25.3.0",
     "mocha": "^3.5.3",
     "mocha-junit-reporter": "^1.23.3",
     "nyc": "^15.0.0",
+    "playwright": "^0.13.0",
+    "qawolf": "^0.13.2",
     "supertest": "^2.0.0"
   }
 }

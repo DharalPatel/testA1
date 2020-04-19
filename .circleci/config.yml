@@ -29,7 +29,33 @@ jobs:
           command: |
             bash <(curl -s https://codecov.io/bash)
 
+  end-2-end:
+    docker:
+      - image: qawolf/playwright-ci:v0.9.0
+      - image: postgres:12.2-alpine
+        
+    working_directory: ~/project/src
+    steps:
+      - checkout:
+          path: ~/project
+      - install_deps
+      - run:
+          name: Run end-to-end tests
+          command: |
+            npm run start:prod & 
+            npx wait-on http://localhost:3000
+            npm run test-e2e
+          environment:
+            POSTGRES_DB: servian
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: password
+      - store_test_results:
+          path: test-output
+
 workflows:
   build-and-package:
     jobs:
       - ci-build
+      - end-2-end:
+          requires:
+            - ci-build
