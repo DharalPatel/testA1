@@ -33,6 +33,10 @@ jobs:
     docker:
       - image: qawolf/playwright-ci:v0.9.0
       - image: postgres:12.2-alpine
+        environment:
+          POSTGRES_DB: servian
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
         
     working_directory: ~/project/src
     steps:
